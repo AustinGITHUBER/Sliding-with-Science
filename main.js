@@ -15,7 +15,7 @@ addEventListener('mousedown', ev => {
     mouseCoords = [ev.x, ev.y]
     if (mouseDown || !movable) return
     mouseDown = true
-    circleCoords = [ev.x, ev.y]
+    circleCoords = [...mouseCoords]
 })
 addEventListener('mouseup', ev => {
     mouseDown = false
@@ -25,9 +25,22 @@ addEventListener('mouseup', ev => {
     yVelocity += circleCoords[1] - ev.y
     circleCoords = []
 })
-addEventListener('mousemove', ev => {
-    mouseCoords = [ev.x, ev.y]
+addEventListener('mousemove', ev => mouseCoords = [ev.x, ev.y])
+addEventListener('touchstart', ev => {
+    mouseCoords = [ev.changedTouches.item(0).clientX, ev.changedTouches.item(0).clientY]
+    if (mouseDown || !movable) return
+    mouseDown = true
+    circleCoords = [...mouseCoords]
 })
+addEventListener('touchend', ev => {
+    mouseDown = false
+    if (circleCoords.length !== 2) return
+    if (playing) movable = false
+    xVelocity += ev.changedTouches.item(0).clientX - circleCoords[0]
+    yVelocity += circleCoords[1] - ev.changedTouches.item(0).clientY
+    circleCoords = []
+})
+addEventListener('touchmove', ev => mouseCoords = [ev.changedTouches.item(0).clientX, ev.changedTouches.item(0).clientY])
 let ctx = canvas.getContext('2d')
 let x = canvas.width / 2
 let y = canvas.height - 10
