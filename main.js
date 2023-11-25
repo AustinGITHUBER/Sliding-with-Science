@@ -45,6 +45,7 @@ let lines = [
     [345, 45, 2],
     [450, 50, 1]
 ]
+let bounce = false
 {
     function makeLine(y = 0, h = 0, pts = 3) {
         ctx.beginPath()
@@ -104,7 +105,7 @@ let lines = [
         x += xVelocity / 100  * (ms - _ms)
         y -= yVelocity / 100  * (ms - _ms)
         _ms = ms
-        if (!movable && playing && (x < -10 || x > canvas.width + 10 || y < -10 || y > canvas.height + 10)) {
+        if (!movable && playing && (x < -10 || x > canvas.width + 10 || y < -10 || y > canvas.height + 10) && !bounce) {
             xVelocity = 0
             yVelocity = 0
             x = canvas.width / 2
@@ -124,6 +125,14 @@ let lines = [
             x = canvas.width / 2
             y = canvas.height - 10
             movable = true
+        }
+        if (!movable && (x < 10 || x > canvas.width - 10) && bounce) {
+            xVelocity *= -1
+            x = Math.min(canvas.width - 10, Math.max(10, x))
+        }
+        if (!movable && (y < 10 || y > canvas.height - 10) && bounce) {
+            yVelocity *= -1
+            y = Math.min(canvas.height - 10, Math.max(10, y))
         }
         if (doMain) requestAnimationFrame(main)
     }
