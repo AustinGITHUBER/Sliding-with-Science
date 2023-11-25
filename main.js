@@ -109,8 +109,8 @@ let bounce = false
         ctx.ellipse(mouseCoords[0], mouseCoords[1], 5, 5, 0, 0, Math.PI * 2)
         ctx.fill()
         ctx.closePath()
-        let _xVel = (1 - friction / 1000 * (ms - _ms)) * xVelocity
-        let _yVel = (1 - friction / 1000 * (ms - _ms)) * yVelocity
+        let _xVel = Math.max(1 - friction / 1000 * (ms - _ms), 0) * xVelocity
+        let _yVel = Math.max(1 - friction / 1000 * (ms - _ms), 0) * yVelocity
         if (-Math.sign(xVelocity) === Math.abs(_xVel)) xVelocity = 0
         else xVelocity = _xVel
         if (-Math.sign(yVelocity) === Math.abs(_yVel)) yVelocity = 0
